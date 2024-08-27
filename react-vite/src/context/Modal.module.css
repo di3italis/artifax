@@ -1,0 +1,148 @@
+.modal {
+  background-color: rgba(0, 0, 0, .5);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalBackground {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  /* background-color: rgba(0, 0, 0, 0.7); */
+	background: linear-gradient(to left, rgba(255,255,255,0.2) 0%,rgba(255,255,255,0) 100%); 
+}
+
+.modalContent {
+  background-color: #181A1B;
+  border-radius: 20px;
+  position: absolute;
+  /* background-color: black; */
+}
+
+/* Path: SignupFormModal.css */
+.SignupFormModal .LoginFormModal{
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Styling for the form */
+form {
+    padding: .1em 1em;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    background: linear-gradient(to left, rgba(255,255,255,0.2) 0%,rgba(255,255,255,0) 100%); 
+    border-radius: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+li {
+    position: relative;
+    /* padding: 0 0 10px 0; */
+    margin-bottom: 10px;
+}
+
+/* Styling for form fields */
+label {
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: lighter;
+}
+
+input {
+    width: 100%
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 5px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.modalButton {
+    width: 50% ;
+
+}
+
+/* Styling for the submit button */
+button {
+    height: 40px;
+    background-color: #007bff;
+    /* background-color: #4CAF50; */
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+button.disabled:hover {
+    background-color: #ccc;
+}
+
+.deleteYes {
+    background-color: red !important;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Error message styling */
+.loginError {
+  position: relative;
+  background-color: rgba(0,0,0,0);
+  margin: 0px 0 10px 0;
+  padding: 0 0 20px 0;
+}
+
+.inputError::placeholder {
+    color: red;
+}
+
+.error {
+    /* position: absolute; */
+    color: red;
+}
+
+/* Adjust the form item list */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Specific label styling */
+label {
+    /* position: relative; */
+    margin-top: 20px;
+}
+

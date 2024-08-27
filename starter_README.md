@@ -1,5 +1,7 @@
 # Flask React Project
 
+[starter repo](https://github.com/appacademy/aa19-python-group-project/tree/part-time)
+
 This is the starter for the Flask React project.
 
 ## Getting started
