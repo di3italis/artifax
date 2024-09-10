@@ -1,3 +1,4 @@
+# seeds/__init__.py
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
 from .artifax import seed_artifax, undo_artifax

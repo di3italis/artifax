@@ -1,5 +1,7 @@
 # seeds/users.py
-"""Defines user seeds"""
+"""Defines user seeds
+Creates seed data in db based on seed_data.py
+"""
 
 from sqlalchemy.sql import text
 from app.models import db, User, environment, SCHEMA
