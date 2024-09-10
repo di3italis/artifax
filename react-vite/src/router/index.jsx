@@ -2,7 +2,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import LoginFormPage from "../components/LoginFormPage";
 import SignupFormPage from "../components/SignupFormPage";
-import Artifax from "../components/Artifax";
+import AllFax from "../components/AllFax";
 import Layout from "./Layout";
 
 export const router = createBrowserRouter([
@@ -25,10 +25,10 @@ export const router = createBrowserRouter([
                 path: "artifax",
                 element: <AllFax />,
             },
-            {
-                path: "artifax/:id",
-                element: <ArtId />,
-            }
+            // {
+            //     path: "artifax/:id",
+            //     element: <ArtId />,
+            // }
         ],
     },
 ]);

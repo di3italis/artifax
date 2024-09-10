@@ -16,7 +16,7 @@ def artifax_get_all():
     Query for all artifax and returns them in a list of artifax dictionaries
     """
     artifax = Artifax.query.all()
-    return {"artifax": [artifax.to_dict() for artifax in artifax]}
+    return {"artifax": [fax.to_dict() for fax in artifax]}
 
 
 @artifax_routes.route("/<int:id>")
