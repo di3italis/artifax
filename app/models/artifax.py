@@ -40,8 +40,14 @@ class Artifax(db.Model):
             "title": self.title,
             "description": self.description,
             # "price": self.price,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at,
+            # "created_at": self.created_at,
+            # "updated_at": self.updated_at,
+            "created_at": self.created_at.strftime("%y%m%d:%H%M%S")
+            if self.created_at
+            else None,
+            "updated_at": self.updated_at.strftime("%y%m%d:%H%M%S")
+            if self.updated_at
+            else None,
             # "labels": [label.to_dict() for label in self.labels],
             # "likes": [like.to_dict() for like in self.likes],
             # "comments": [comment.to_dict() for comment in self.comments],

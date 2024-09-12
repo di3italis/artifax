@@ -23,11 +23,20 @@ def artifax_get_all():
 # @login_required
 def artifax_get_by_id(id):
     """
-    Query for a artifax by id and returns that artifax in a dictionary
+    Query for an artifax by id and returns that artifax in a dictionary
     """
-    # this may not work->
-    artifax = Artifax.query.get(id)
-    return artifax.to_dict() if artifax else {"error": "Artifax not found"}, 404
+    try:
+        # Log the ID for debugging purposes
+        print(f"Fetching artifax with ID: {id}")
+
+        fax = Artifax.query.filter_by(id=id).first()
+        if fax:
+            return {"fax": fax.to_dict()}
+        else:
+            return {"error": "Artifax not found"}, 404
+    except Exception as e:
+        # Catch unexpected errors and return a JSON response
+        return {"error": str(e)}, 500
 
 
 # @artifax_routes.route("/", methods=["POST"])

@@ -21,10 +21,10 @@ export const getAction= (payload) => {
 }
 
 // --------------GET ARTIFAX DETAILS ACTION----------------
-export const detailAction = (faxId) => {
+export const detailAction = (payload) => {
     return {
         type: GET_ARTIFAX_DETAILS,
-        faxId,
+        payload,
     };
 }
 
@@ -87,6 +87,26 @@ export const getArtifax = () => async (dispatch) => {
 }
 
 // --------------GET ARTIFAX DETAILS THUNK----------------
+export const getArtifaxDetails = (faxId) => async (dispatch) => {
+    try {
+        console.log("enter try block")
+        const res = await fetch(`/api/artifax/${faxId}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+            }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            console.log("get deets data:", data)
+            dispatch(detailAction(data.fax));
+        }
+    }
+    catch (error) {
+        console.error("ERROR IN getARTIFAXDETAILS", error);
+        dispatch(errorAction(error));
+    }
+}
 
 // --------------ADD ARTIFAX THUNK----------------
 
@@ -107,14 +127,12 @@ export default function artifaxReducer(state = initialState, action) {
             });
             return newState;
         }
-        // // --------------GET ARTIFAX DETAILS----------------
-        // case GET_ARTIFAX_DETAILS: {
-        //     const newState = structuredClone(state);
-        //     // const id = action.payload.id;
-        //     newState[action.payload.id] = action.payload;
-        //     return newState;
-        //     // return { ...state, [id]: action.payload };
-        // }
+        // --------------GET ARTIFAX DETAILS----------------
+        case GET_ARTIFAX_DETAILS: {
+            console.log("deet reducer", action.payload)
+            const id = action.payload.id;
+            return { ...state, [id]: action.payload };
+        }
         // // --------------ADD ARTIFAX----------------
         // case ADD_ARTIFAX: {
         //     const newState = structuredClone(state);
