@@ -43,26 +43,4 @@ export default function AllFax() {
             ))}
         </div>
     );
-
-    // return (
-    //     <div>
-    //         {artifaxArray &&
-    //             artifaxArray.map((fax) => (
-    //                 <div key={fax.id}>
-    //                     <div
-    //                         style={{
-    //                             width: "300px",
-    //                             height: "200px",
-    //                             backgroundImage: `url(${fax.image})`,
-    //                             backgroundSize: "cover",
-    //                             backgroundPosition: "center",
-    //                         }}
-    //                     >
-    //                     </div>
-    //                     <h2>{fax.title}</h2>
-    //                     <p>{fax.description}</p>
-    //                 </div>
-    //             ))}
-    //     </div>
-    // );
 }

@@ -5,12 +5,12 @@ import { Link } from "react-router-dom";
 import styles from "./FaxCard.module.css";
 
 
-export default function FaxCard({ fax }) {
+export default function FaxCard({ fax, navAll }) {
     console.log("fax.id:", fax.id, typeof fax.id);
 
     return (
         <div className={styles.card}>
-            <Link to={`/artifax/${fax.id}`}>
+            <Link to={navAll ? "/artifax" : `/artifax/${fax.id}`}>
                 <div className={styles.imageContainer}>
                     <img
                         src={fax.image}
