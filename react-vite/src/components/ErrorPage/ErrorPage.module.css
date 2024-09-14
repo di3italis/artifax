@@ -1,0 +1,41 @@
+.heading {
+    font-size: 3em;
+    margin: 0;
+    font-family: 'mark', sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    height: 100vh;
+    color: #007bff;
+}
+
+
+.oops {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* height: 100%; */
+    width: 100%;
+}
+
+.image {
+    max-width: 80%;
+    height: auto;
+    max-height: 80vh;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+    .image {
+        max-width: 100%;
+        height: auto;
+        max-height: 50vh;
+        padding: 20px;
+    }
+}

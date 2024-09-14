@@ -1,3 +1,4 @@
+//Layout.jsx
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
