@@ -39,6 +39,34 @@ def artifax_get_by_id(id):
         return {"error": str(e)}, 500
 
 
+@artifax_routes.route("/<int:id>", methods=["DELETE"])
+@login_required
+def artifax_delete_by_id(id):
+    """
+    Delete an artifax by id
+    """
+    try:
+        # Log the ID for debugging purposes
+        print(f"Deleting artifax with ID: {id}")
+
+        fax = Artifax.query.filter_by(id=id).first()
+
+        if not fax:
+            return {"error": "Artifax not found"}, 404
+
+        if fax.owner_id != current_user.id:
+            return {"error": "Unauthorized"}, 403
+
+        db.session.delete(fax)
+        db.session.commit()
+
+        return {"message": "Artifax deleted successfully"}
+
+    except Exception as e:
+        # Catch unexpected errors and return a JSON response
+        return {"error": str(e)}, 500
+
+
 # @artifax_routes.route("/", methods=["POST"])
 # @login_required
 # def create_artifax():

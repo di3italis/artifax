@@ -111,6 +111,27 @@ export const getArtifaxDetails = (faxId) => async (dispatch) => {
 // --------------ADD ARTIFAX THUNK----------------
 
 // --------------DELETE ARTIFAX THUNK----------------
+export const deleteArtifax = (faxId) => async (dispatch) => {
+    try {
+        const res = await fetch(`/api/artifax/${faxId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+            }
+        });
+        if (res.ok) {
+            dispatch(deleteAction(faxId));
+        } else {
+            const errorData = await res.json();
+            console.log(`Failed to delete fax ${faxId}:`, errorData)
+        }
+    }
+    catch (error) {
+        console.error("ERROR IN deleteARTIFAX", error);
+        dispatch(errorAction(error));
+    }
+}
 
 // --------------EDIT ARTIFAX THUNK----------------
 
@@ -140,11 +161,11 @@ export default function artifaxReducer(state = initialState, action) {
         //     return newState;
         // }
         // // --------------DELETE ARTIFAX----------------
-        // case DELETE_ARTIFAX: {
-        //     const newState = structuredClone(state);
-        //     delete newState[action.artifaxId];
-        //     return newState;
-        // }
+        case DELETE_ARTIFAX: {
+            const newState = structuredClone(state);
+            delete newState[action.faxId];
+            return newState;
+        }
         // // --------------EDIT ARTIFAX----------------
         // case EDIT_ARTIFAX: {
         //     const newState = structuredClone(state);
