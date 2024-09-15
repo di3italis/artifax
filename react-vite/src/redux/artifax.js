@@ -1,10 +1,11 @@
 // redux/artifax.js
+import axios from "axios";
 import { getCookie } from "./utils";
 
 // --------------CONSTANTS----------------
 const GET_ARTIFAX = "artifax/GET_ARTIFAX";
 const GET_ARTIFAX_DETAILS = "artifax/GET_ARTIFAX_DETAILS";
-const ADD_ARTIFAX = "artifax/ADD_ARTIFAX";
+const CREATE_ARTIFAX = "artifax/CREATE_ARTIFAX";
 const UPDATE_ARTIFAX = "artifax/EDIT_ARTIFAX";
 const DELETE_ARTIFAX = "artifax/DELETE_ARTIFAX";
 const ERROR = "artifax/ERROR";
@@ -28,10 +29,10 @@ export const detailAction = (payload) => {
     };
 }
 
-// --------------ADD ARTIFAX ACTION----------------
-export const addAction = (payload) => {
+// --------------CREATE ARTIFAX ACTION----------------
+export const createAction = (payload) => {
     return {
-        type: ADD_ARTIFAX,
+        type: CREATE_ARTIFAX,
         payload,
     };
 }
@@ -108,7 +109,76 @@ export const getArtifaxDetails = (faxId) => async (dispatch) => {
     }
 }
 
-// --------------ADD ARTIFAX THUNK----------------
+// --------------CREATE ARTIFAX THUNK----------------
+export const createArtifax = (formData) => async (dispatch) => {
+    try {
+        // const apiKey = import.meta.env.IMG_HIPPO_API_KEY;
+        // formData["file"] = image;
+        // formData["api_key"] = "9W1YwT4VSelIHJyR3RYeKKmMlrGGiHJf";
+        // // formData["api_key"] = apiKey;
+        console.log("formData title:", formData.title);
+
+         const imageUploadResponse = await fetch("/api/artifax/upload_image", {
+            method: "POST",
+            body: formData,
+        });
+
+        const imageUploadData = await imageUploadResponse.json();  // Parse the response as JSON
+
+
+        if (imageUploadData.ok && imageUploadData.success) {
+            const imageUrl = imageUploadData.data.url;
+            
+            formData.append("image", imageUrl);
+
+            const artifaxData = {
+                title: formData.title,
+                description: formData.description,
+                image: imageUrl
+            };
+            const res = await fetch("api/artifax", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken"),
+                },
+                body: JSON.stringify(artifaxData)
+            });
+            if (res.ok) {
+                const data = await res.json();
+                dispatch(createAction(data));
+                return data;
+            } else {
+                const errorData = await res.json();
+                console.log("Failed to create fax:", errorData);
+            }
+        }
+        else {
+            console.log("Failed to upload image:", imageUploadData);
+        }
+
+        
+        // const res = await fetch("/api/artifax/", {
+        //     method: "POST",
+        //     headers: {
+        //         "X-CSRFToken": getCookie("csrftoken"),
+        //     },
+        //     body: formData
+        // });
+        // if (res.ok) {
+        //     const data = await res.json();
+        //     dispatch(createAction(data));
+        // } else {
+        //     const errorData = await res.json();
+        //     console.log("Failed to create fax:", errorData);
+        // }
+    }
+    catch (error) {
+        console.error("ERROR IN createARTIFAX", error);
+        dispatch(errorAction(error));
+        throw error;
+    }
+}
 
 // --------------DELETE ARTIFAX THUNK----------------
 export const deleteArtifax = (faxId) => async (dispatch) => {
@@ -154,12 +224,12 @@ export default function artifaxReducer(state = initialState, action) {
             const id = action.payload.id;
             return { ...state, [id]: action.payload };
         }
-        // // --------------ADD ARTIFAX----------------
-        // case ADD_ARTIFAX: {
-        //     const newState = structuredClone(state);
-        //     newState[action.payload.id] = action.payload;
-        //     return newState;
-        // }
+        // --------------CREATE ARTIFAX----------------
+        case CREATE_ARTIFAX: {
+            const newState = structuredClone(state);
+            newState[action.payload.id] = action.payload;
+            return newState;
+        }
         // // --------------DELETE ARTIFAX----------------
         case DELETE_ARTIFAX: {
             const newState = structuredClone(state);

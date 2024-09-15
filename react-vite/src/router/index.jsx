@@ -5,6 +5,7 @@ import SignupFormPage from "../components/SignupFormPage";
 import Home from "../components/Home";
 import AllFax from "../components/AllFax";
 import ArtId from "../components/ArtId";
+import CreateFax from "../components/CreateFax";
 import ErrorPage from "../components/ErrorPage";
 import Layout from "./Layout";
 
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
             {
                 path: "artifax/:faxId",
                 element: <ArtId />,
+            },
+            {
+                path: "artifax/create",
+                element: <CreateFax />
             },
             {
                 path: "*",

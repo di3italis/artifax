@@ -8,12 +8,21 @@ import styles from "./FaxCard.module.css";
 export default function FaxCard({ fax, navAll }) {
     console.log("fax.id:", fax.id, typeof fax.id);
 
+    const isExternal = fax.image.startsWith("http");
+
+    // If the image is external, use it directly, otherwise generate URL
+    const imageUrl = isExternal ?
+        fax.image 
+        // : `${process.env.REACT_BASE_URL}/static/${fax.image}`;
+        : <img src="{{ url_for('static', filename=fax.image) }}" alt="{{ artifax.title }}" />
+
+
     return (
         <div className={styles.card}>
             <Link to={navAll ? "/artifax" : `/artifax/${fax.id}`}>
                 <div className={styles.imageContainer}>
                     <img
-                        src={fax.image}
+                        src={imageUrl}
                         alt={fax.title}
                         title={fax.title}
                         className={styles.image}

@@ -20,7 +20,7 @@ function Navigation({ isLoaded }) {
             <ul className="navLinks">
                 <li>
                     {sessionUser && (
-                        <NavLink className="createFax" to="/create-artifax">
+                        <NavLink className="createFax" to="artifax/create">
                             Create a New Artifax
                         </NavLink>
                     )}
