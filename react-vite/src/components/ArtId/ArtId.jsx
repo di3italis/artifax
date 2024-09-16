@@ -3,32 +3,43 @@ import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getArtifaxDetails } from "../../redux/artifax";
+import { getComments } from "../../redux/comment";
 import OpenModalButton from "../OpenModalButton";
 import EditFaxModal from "../EditFaxModal/EditFaxModal.jsx";
 import DeleteFaxModal from "../DeleteFaxModal";
+import EditCommentModal from "../EditCommentModal";
+import DeleteCommentModal from "../DeleteCommentModal";
 // import styles here
 
 export default function ArtId() {
     const { faxId: faxIdStr } = useParams();
-    console.log("faxIdStr from useParams:", faxIdStr); // Check what useParams returns
     const faxId = parseInt(faxIdStr, 10);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
-
+    const allComments = useSelector((state) => state.comments);
     const navigate = useNavigate();
+
     const fax = useSelector((state) => state.artifax[faxId]);
-    // const comments = useSelector((state) => state.artifax.comments);
-    const comments = fax?.comments || [];
     const currentUser = useSelector((state) => state.session.user);
-    console.log("faxId:", faxId);
-    console.log("current state.fax:", fax);
+
+    const commentsArray = useMemo(() => Object.values(allComments) || [], [allComments]);
+
 
     useEffect(() => {
+        const loadComments = async () => {
+            const res = await dispatch(getComments(faxId));
+            if (res && res.comments) {
+                console.log("Comments fetched, state update", res.comments);
+                setComments(res.comments);
+            }
+        }
+    
         const loadFax = async () => {
             await dispatch(getArtifaxDetails(faxId));
-            console.log("Fax fetched, state update");
             setLoading(false);
         };
+
+        loadComments();
         loadFax();
     }, [dispatch, faxId]);
 
@@ -41,6 +52,10 @@ export default function ArtId() {
         console.log("No Fax found");
         return <div>No Fax found!</div>;
     }
+
+    // const commentsArray = Object.values(comments);
+    console.log("commentsArray:", commentsArray);
+    // const commentsArray = useMemo(() => Object.values(comments) || [], [comments]);
 
     return (
         <div>
@@ -57,30 +72,58 @@ export default function ArtId() {
                 <h2>{fax.title}</h2>
                 <p>{fax.description}</p>
             </div>
+            {currentUser?.id === fax.owner_id && (
+                <OpenModalButton
+                    buttonText={"Delete Artifax"}
+                    modalComponent={<DeleteFaxModal faxId={fax.id} owner_id={fax.owner_id} />}
+                />
+            )} 
+
+            {currentUser?.id === fax.owner_id && (
+                <OpenModalButton
+                    buttonText={"Edit Artifax"}
+                    modalComponent={<EditFaxModal faxId={fax.id} />}
+                />
+            )}
 
             <div>
                 <h3>Comments</h3>
-                {comments && comments.map((comment) => (
-                    <div key={comment.id}>
-                        <p>{comment.text}</p>
-                        <p>User {comment.username}</p>
-                    </div>
-                ))}
+                {commentsArray.length > 0 ? (
+                    commentsArray.map((comment) => (
+                        <div key={comment.id}>
+                            <p>{comment.text}</p>
+                            <p>User {comment.username}</p>
 
+                            {currentUser?.id === comment.owner_id && (
+                                <>
+                                    <OpenModalButton
+                                        buttonText={"Edit Comment"}
+                                        modalComponent={
+                                            <EditCommentModal 
+                                                commentId={comment.id} 
+                                                owner_id={comment.owner_id} 
+                                                text={comment.text} 
+                                            />
+                                        }
+                                    />
+                                    <OpenModalButton
+                                        buttonText={"Delete Comment"}
+                                        modalComponent={
+                                            <DeleteCommentModal 
+                                                commentId={comment.id} 
+                                                owner_id={comment.owner_id} 
+                                            />
+                                        }
+                                    />
+                                </>
+                            )}
+                        </div>
+                    ))
+                ) : (
+                    <p>No comments yet.</p>
+                )}
             </div>
-            {currentUser?.id === fax.owner_id && (
-            <OpenModalButton
-                buttonText={"Delete"}
-                modalComponent={<DeleteFaxModal faxId={fax.id}  owner_id={fax.owner_id}/>}
-            />
-            )} 
 
-            {currentUser?.id === fax.owner_id && (
-            <OpenModalButton
-                buttonText={"Edit"}
-                modalComponent={<EditFaxModal faxId={fax.id}/>}
-            />
-            )} 
         </div>
-    );
+    ); 
 }

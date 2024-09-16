@@ -7,11 +7,12 @@ import {
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import artifaxReducer from "./artifax";
-// import commentReducer from "./comment";
+import commentReducer from "./comment";
 
 const rootReducer = combineReducers({
     session: sessionReducer,
     artifax: artifaxReducer,
+    comments: commentReducer,
 });
 
 let enhancer;

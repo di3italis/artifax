@@ -2,9 +2,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getArtifax } from "../../redux/artifax";
-// import artifax card component here, TBC
 import FaxCard from "../FaxCard";
-// import styles here
 import styles from './AllFax.module.css';
 
 export default function AllFax() {

@@ -1,5 +1,4 @@
 // redux/artifax.js
-import axios from "axios";
 import { getCookie } from "./utils";
 
 // --------------CONSTANTS----------------
@@ -94,7 +93,7 @@ export const getArtifax = () => async (dispatch) => {
         if (res.ok) {
             const data = await res.json();
             console.log("Fetched data.artifax:", data.artifax);
-            console.log("Fetched data:", data);
+            // console.log("Fetched data:", data);
             dispatch(getAction(data.artifax));
         }
     } catch (error) {
@@ -106,7 +105,6 @@ export const getArtifax = () => async (dispatch) => {
 // --------------GET ARTIFAX DETAILS THUNK----------------
 export const getArtifaxDetails = (faxId) => async (dispatch) => {
     try {
-        console.log("enter try block");
         const res = await fetch(`/api/artifax/${faxId}`, {
             headers: {
                 "Content-Type": "application/json",
@@ -115,7 +113,7 @@ export const getArtifaxDetails = (faxId) => async (dispatch) => {
         });
         if (res.ok) {
             const data = await res.json();
-            console.log("get deets data:", data);
+            // console.log("get deets data:", data);
             dispatch(detailAction(data.fax));
         }
     } catch (error) {
@@ -235,7 +233,6 @@ export default function artifaxReducer(state = initialState, action) {
         }
         // --------------GET ARTIFAX DETAILS----------------
         case GET_ARTIFAX_DETAILS: {
-            console.log("deet reducer", action.payload);
             const id = action.payload.id;
             return { ...state, [id]: action.payload };
         }
