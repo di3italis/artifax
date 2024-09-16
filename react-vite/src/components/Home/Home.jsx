@@ -24,13 +24,13 @@ export default function SplashPage() {
         return null;
     }, [artifaxArray]);
 
-    useEffect([dispatch], () => {
+    useEffect(() => {
         const loadFax = async () => {
             await dispatch(getArtifax());
             setLoading(false);
         };
         loadFax();
-    });
+    }, [dispatch]);
 
     if (loading) {
         return <div>Loading...</div>;
