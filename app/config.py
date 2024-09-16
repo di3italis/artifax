@@ -17,15 +17,5 @@ class Config:
     )
     SQLALCHEMY_ECHO = True
 
-    # Flask-Uploads
-    ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
-    UPLOAD_FOLDER = os.path.join(basedir, "uploads")
-
-    # set max upload size to 16MB
-    MAX_CONTENT_LENGTH = 16 * 1024 * 1024
-
-    # img hippo api
-    IMG_HIPPO_API_KEY = os.environ.get("IMG_HIPPO_API_KEY")
-
     # openai api
     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")

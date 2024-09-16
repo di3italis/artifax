@@ -32,8 +32,6 @@ def load_user(id):
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
-app.config["IMG_HIPPO_API_KEY"] = os.getenv("IMG_HIPPO_API_KEY")
-
 
 app.register_blueprint(user_routes, url_prefix="/api/users")
 app.register_blueprint(auth_routes, url_prefix="/api/auth")
@@ -42,10 +40,6 @@ app.register_blueprint(
     proxy_routes, url_prefix="/api/proxy"
 )  # Register the proxy route
 # app.register_blueprint(comment_routes, url_prefix="/api/comments")
-
-# Ensure that the upload folder exists
-if not os.path.exists(app.config["UPLOAD_FOLDER"]):
-    os.makedirs(app.config["UPLOAD_FOLDER"])
 
 db.init_app(app)
 Migrate(app, db)
