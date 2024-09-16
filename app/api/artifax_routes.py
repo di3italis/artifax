@@ -13,7 +13,7 @@ from .utils import validate_string
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
-client = OpenAI()
+client = OpenAI(api_key=api_key)
 # openai.api_key = os.getenv("OPENAI_API_KEY")
 
 artifax_routes = Blueprint("artifax", __name__)
