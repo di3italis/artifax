@@ -1,6 +1,6 @@
 // AddCommentModal.jsx
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addComment } from "../../redux/comment";
 import { useModal } from "../../context/Modal";
 import styles from "./AddCommentModal.module.css";
@@ -8,7 +8,6 @@ import styles from "./AddCommentModal.module.css";
 export default function AddCommentModal({ faxId }) {
     const dispatch = useDispatch();
     const [text, setText] = useState("");
-    const { loading } = useSelector((state) => state);
     const [error, setError] = useState(null);
     const { closeModal } = useModal();
 
@@ -57,4 +56,3 @@ export default function AddCommentModal({ faxId }) {
         </div>
     );
 }
-

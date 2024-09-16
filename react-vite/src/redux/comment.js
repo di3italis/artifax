@@ -5,8 +5,8 @@ import { getCookie } from "./utils";
 // --------------CONSTANTS----------------
 const GET_COMMENTS = "comments/GET_COMMENTS";
 const ADD_COMMENT_REQUEST = "comments/ADD_COMMENT_REQUEST";
-const ADD_COMMENT_SUCCESS = "comments/ADD_COMMENT_SUCCESS";
-const ADD_COMMENT_FAILURE = "comments/ADD_COMMENT_FAILURE";
+// const ADD_COMMENT_SUCCESS = "comments/ADD_COMMENT_SUCCESS";
+// const ADD_COMMENT_FAILURE = "comments/ADD_COMMENT_FAILURE";
 const ADD_COMMENT = "comments/ADD_COMMENT";
 const DELETE_COMMENT = "comments/DELETE_COMMENT";
 const EDIT_COMMENT = "comments/EDIT_COMMENT";
@@ -52,12 +52,12 @@ export const editCommentAction = (payload) => {
     };
 };
 
-// --------------LOADING ACTION----------------
-export const loadingAction = () => {
-    return {
-        type: LOADING,
-    };
-};
+// // --------------LOADING ACTION----------------
+// export const loadingAction = () => {
+//     return {
+//         type: LOADING,
+//     };
+// };
 
 // --------------ERROR ACTION----------------
 export const errorAction = (payload) => {
@@ -178,7 +178,7 @@ const initialState = {};
 
 export default function commentsReducer(state = initialState, action) {
     switch (action.type) {
-        
+
         // --------------GET COMMENTS----------------
         case GET_COMMENTS: {
             const newState = {...state, loading: false};

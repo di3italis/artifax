@@ -10,7 +10,7 @@ import DeleteFaxModal from "../DeleteFaxModal";
 import AddCommentModal from "../AddCommentModal";
 import EditCommentModal from "../EditCommentModal";
 import DeleteCommentModal from "../DeleteCommentModal";
-// import styles here
+import styles from "./ArtId.module.css";
 
 export default function ArtId() {
     const { faxId: faxIdStr } = useParams();
@@ -20,7 +20,6 @@ export default function ArtId() {
 
     const fax = useSelector((state) => state.artifax[faxId]);
     const allComments = useSelector((state) => state.comments);
-    const loadingComments = useSelector((state) => state.comments.loading);
 
     const currentUser = useSelector((state) => state.session.user);
 
