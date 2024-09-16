@@ -20,14 +20,16 @@ class Comment(db.Model):
     )
 
     owner_id = db.Column(db.Integer, ForeignKey(add_prefix_for_prod("users.id")))
+    username = db.relationship("User")
     artifax_id = db.Column(db.Integer, ForeignKey(add_prefix_for_prod("artifax.id")))
-    artifax = relationship("Artifax", back_populates="comments")
+    artifax = db.relationship("Artifax", back_populates="comments")
 
     def to_dict(self):
         """Return a dictionary representation of the object"""
         return {
             "id": self.id,
             "owner_id": self.owner_id,
+            "username": self.username.username,
             "artifax_id": self.artifax_id,
             "text": self.text,
             "created_at": self.created_at.strftime("%y%m%d:%H%M%S")

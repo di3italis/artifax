@@ -17,6 +17,8 @@ export default function ArtId() {
 
     const navigate = useNavigate();
     const fax = useSelector((state) => state.artifax[faxId]);
+    // const comments = useSelector((state) => state.artifax.comments);
+    const comments = fax?.comments || [];
     const currentUser = useSelector((state) => state.session.user);
     console.log("faxId:", faxId);
     console.log("current state.fax:", fax);
@@ -55,12 +57,24 @@ export default function ArtId() {
                 <h2>{fax.title}</h2>
                 <p>{fax.description}</p>
             </div>
+
+            <div>
+                <h3>Comments</h3>
+                {comments && comments.map((comment) => (
+                    <div key={comment.id}>
+                        <p>{comment.text}</p>
+                        <p>User {comment.username}</p>
+                    </div>
+                ))}
+
+            </div>
             {currentUser?.id === fax.owner_id && (
             <OpenModalButton
                 buttonText={"Delete"}
                 modalComponent={<DeleteFaxModal faxId={fax.id}  owner_id={fax.owner_id}/>}
             />
             )} 
+
             {currentUser?.id === fax.owner_id && (
             <OpenModalButton
                 buttonText={"Edit"}
