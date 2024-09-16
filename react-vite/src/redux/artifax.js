@@ -132,7 +132,7 @@ export const createArtifax = (formData) => async (dispatch) => {
         const printFormData = structuredClone(formData);
         console.log("formData:", printFormData);
 
-        const res = await fetch(`/api/artifax/${formData.id}`, {
+        const res = await fetch("/api/artifax/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
