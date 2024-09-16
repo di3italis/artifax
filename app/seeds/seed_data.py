@@ -40,6 +40,9 @@ artifax_img_urls = [
     "https://i.ibb.co/dbhVXRY/7.jpg",
     "https://i.ibb.co/4NcjGfp/8.jpg",
     "https://i.ibb.co/7td7DGx/9.jpg",
+    "https://i.ibb.co/JKT0rNW/test-In-Prod.png",
+    "https://ibb.co/Vw573Wk",
+    "https://ibb.co/1LTJQ1z",
 ]
 
 artifax_titles = [
