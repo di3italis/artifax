@@ -18,7 +18,8 @@ export default function ArtId() {
     const navigate = useNavigate();
     const fax = useSelector((state) => state.artifax[faxId]);
     // const comments = useSelector((state) => state.artifax.comments);
-    const comments = fax?.comments || [];
+    // const [comments, setComments] = useState([]);
+    // const comments = fax?.comments || [];
     const currentUser = useSelector((state) => state.session.user);
     console.log("faxId:", faxId);
     console.log("current state.fax:", fax);
@@ -30,7 +31,10 @@ export default function ArtId() {
             setLoading(false);
         };
         loadFax();
+        // setComments(fax.comments);
     }, [dispatch, faxId]);
+
+    const comments = useMemo(() => fax?.comments || [], [fax]);
 
     if (loading) {
         console.log("Loading...");
