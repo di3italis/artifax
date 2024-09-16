@@ -14,7 +14,7 @@ def seed_comments():
         print(f"Seeding comment {i + 1} of {sd.num_artifax}")
         comment = Comment(
             owner_id=choice(range(1, len(sd.users_list) + 1)),
-            artifax_id=choice(range(1, sd.num_artifax + 1)),
+            artifax_id=i + 1,
             text=comments[i],
         )
         db.session.add(comment)
