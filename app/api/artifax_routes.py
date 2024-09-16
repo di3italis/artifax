@@ -113,6 +113,49 @@ def user_artifax():
     return {"artifax": [fax.to_dict() for fax in artifax]}
 
 
+@artifax_routes.route("/<int:id>", methods=["PUT"])
+@login_required
+def artifax_update_by_id(id):
+    """
+    Update an artifax by id
+    """
+    try:
+        # Log the ID for debugging purposes
+        print(f"Updating artifax with ID: {id}")
+
+        fax = Artifax.query.filter_by(id=id).first()
+
+        if not fax:
+            return {"error": "Artifax not found"}, 404
+
+        if fax.owner_id != current_user.id:
+            return {"error": "Unauthorized"}, 403
+
+        data = request.get_json()
+
+        title = data.get("title")
+        description = data.get("description")
+
+        # Validation
+        errors = {}
+        validate_string("title", data, errors)
+        validate_string("description", data, errors)
+
+        if errors:
+            return {"errors": errors}, 400
+
+        fax.title = title
+        fax.description = description
+
+        db.session.commit()
+
+        return fax.to_dict()
+
+    except Exception as e:
+        # Catch unexpected errors and return a JSON response
+        return {"error": str(e)}, 500
+
+
 @artifax_routes.route("/<int:id>", methods=["DELETE"])
 @login_required
 def artifax_delete_by_id(id):

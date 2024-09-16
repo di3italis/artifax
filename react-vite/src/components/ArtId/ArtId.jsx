@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getArtifaxDetails } from "../../redux/artifax";
 import OpenModalButton from "../OpenModalButton";
-// import EditFaxModal from "../EditFaxModal";
+import EditFaxModal from "../EditFaxModal/EditFaxModal.jsx";
 import DeleteFaxModal from "../DeleteFaxModal";
 // import styles here
 
@@ -59,6 +59,12 @@ export default function ArtId() {
             <OpenModalButton
                 buttonText={"Delete"}
                 modalComponent={<DeleteFaxModal faxId={fax.id}  owner_id={fax.owner_id}/>}
+            />
+            )} 
+            {currentUser?.id === fax.owner_id && (
+            <OpenModalButton
+                buttonText={"Edit"}
+                modalComponent={<EditFaxModal faxId={fax.id}/>}
             />
             )} 
         </div>

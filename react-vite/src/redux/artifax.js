@@ -10,7 +10,7 @@ const IMAGE_GENERATE_SUCCESS = "artifax/IMAGE_GENERATE_SUCCESS";
 const IMAGE_GENERATE_FAILURE = "artifax/IMAGE_GENERATE_FAILURE";
 const CREATE_ARTIFAX = "artifax/CREATE_ARTIFAX";
 const MY_ARTIFAX = "artifax/MY_ARTIFAX";
-const UPDATE_ARTIFAX = "artifax/EDIT_ARTIFAX";
+const EDIT_ARTIFAX = "artifax/EDIT_ARTIFAX";
 const DELETE_ARTIFAX = "artifax/DELETE_ARTIFAX";
 const ERROR = "artifax/ERROR";
 
@@ -55,10 +55,10 @@ export const myArtifaxAction = (payload) => {
     };
 };
 
-// --------------UPDATE ARTIFAX ACTION----------------
+// --------------EDIT ARTIFAX ACTION----------------
 export const editAction = (payload) => {
     return {
-        type: UPDATE_ARTIFAX,
+        type: EDIT_ARTIFAX,
         payload,
     };
 };
@@ -132,7 +132,7 @@ export const createArtifax = (formData) => async (dispatch) => {
         const printFormData = structuredClone(formData);
         console.log("formData:", printFormData);
 
-        const res = await fetch("/api/artifax/", {
+        const res = await fetch(`/api/artifax/${formData.id}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -198,6 +198,27 @@ export const deleteArtifax = (faxId) => async (dispatch) => {
 };
 
 // --------------EDIT ARTIFAX THUNK----------------
+export const editArtifax = (formData) => async (dispatch) => {
+    const { faxId, title, description } = formData;
+    const updatedData = { title, description };
+    try {
+        const res = await fetch(`/api/artifax/${faxId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: JSON.stringify(updatedData),
+        });
+        if (res.ok) {
+            const data = await res.json();
+            dispatch(editAction(data));
+        }
+    } catch (error) {
+        console.error("ERROR IN editARTIFAX", error);
+        dispatch(errorAction(error));
+    }
+};
 
 // --------------REDUCER----------------
 const initialState = {};
@@ -242,11 +263,11 @@ export default function artifaxReducer(state = initialState, action) {
             return newState;
         }
         // // --------------EDIT ARTIFAX----------------
-        // case EDIT_ARTIFAX: {
-        //     const newState = structuredClone(state);
-        //     newState[action.payload.id] = action.payload;
-        //     return newState;
-        // }
+        case EDIT_ARTIFAX: {
+            const newState = structuredClone(state);
+            newState[action.payload.id] = action.payload;
+            return newState;
+        }
         // --------------ERROR----------------
         case ERROR: {
             return {
