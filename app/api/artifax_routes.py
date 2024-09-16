@@ -1,8 +1,9 @@
 # artifax_routes.py
 """Artifax Routes"""
 
-# import os
+import os
 from openai import OpenAI
+from dotenv import load_dotenv
 from flask import Blueprint, request, jsonify, current_app
 from flask_login import login_required, current_user
 from app.models import Artifax, db
@@ -10,6 +11,8 @@ from app.models import Artifax, db
 # from .config import Config
 from .utils import validate_string
 
+load_dotenv()
+api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
 # openai.api_key = os.getenv("OPENAI_API_KEY")
 
