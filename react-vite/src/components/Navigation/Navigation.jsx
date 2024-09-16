@@ -7,11 +7,12 @@ import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector((state) => state.session.user);
+    const userId = sessionUser?.id;
 
     return (
         <ul className="navContainer">
             <li>
-                <NavLink to="/">
+                <NavLink to="/artifax">
                     <div className="logoLink">
                         <img className="logo" src={logo} alt="logo" />
                     </div>
@@ -20,8 +21,15 @@ function Navigation({ isLoaded }) {
             <ul className="navLinks">
                 <li>
                     {sessionUser && (
-                        <NavLink className="createFax" to="artifax/create">
+                        <NavLink className="navlink" to="artifax/create">
                             Create a New Artifax
+                        </NavLink>
+                    )}
+                </li>
+                <li>
+                    {sessionUser && (
+                        <NavLink className="navlink" to="artifax/my-artifax">
+                            My Artifax
                         </NavLink>
                     )}
                 </li>

@@ -38,9 +38,14 @@ export default function AllFax() {
 
     return (
         <div className={styles.main}>
+            <div className={styles.header}>
+                <h1>Community Artifax Gallery</h1>
+            </div>
+            <div className={styles.cardContainer}>
             {artifaxArray && artifaxArray.map((fax) => (
                 <FaxCard key={fax.id} fax={fax} />
             ))}
+            </div>
         </div>
     );
 }

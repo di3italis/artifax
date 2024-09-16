@@ -1,100 +1,53 @@
 // CreateFax.jsx
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createArtifax } from "../../redux/artifax";
 import { useNavigate } from "react-router-dom";
+import styles from './CreateFax.module.css'; 
+
 
 export default function CreateFax() {
     const dispatch = useDispatch();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [image, setImage] = useState(null);
-    const navigate = useNavigate();
+    const [prompt, setPrompt] = useState("");
+    const { loading } = useSelector((state) => state.artifax);
     const [error, setError] = useState(null);
-
-    const convertImageToBinary = (image) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                const arrayBuffer = e.target.result;
-                const binary = new Uint8Array(arrayBuffer);
-
-                console.log("Binary:", binary);
-
-                resolve(binary);
-            };
-
-            reader.onerror = function (err) {
-                reject(err);
-            };
-
-            reader.readAsArrayBuffer(image);
-        });
-    };
-
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (
-            file &&
-            !["image/jpeg", "image/jpg", "image/png", "image/gif"].includes(
-                file.type
-            )
-        ) {
-            setError("Only image files (jpg, jpeg, png, gif) are allowed.");
-        } else {
-            setImage(file);
-            setError(null); // Reset error
-        }
-    };
-
+    const allFax = useSelector((state) => state.artifax);
+    const [newFax, setNewFax] = useState(null);
+    //
+    // Memoize the array of artifax to avoid unnecessary re-renders
+    const artifaxArray = useMemo(() => Object.values(allFax) || [], [allFax]);
+    console.log("artifaxArray:", artifaxArray);
+    
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!title || !description || !image) {
+        if (!title || !description || !prompt) {
             setError("All fields are required.");
             return;
         }
 
         try {
-            // Wait for image conversion to binary
-            const binaryImage = await convertImageToBinary(image);
-            console.log("Binary Image:", binaryImage);
+            let formData = {};
+        formData = { title, description, prompt };
 
-            const formData = new FormData();
-            formData.append("title", title); // Corrected: Use append for FormData
-            formData.append("description", description);
-            formData.append("image", binaryImage); // Add binary image
-            // Properly inspect FormData
-            for (let [key, value] of formData.entries()) {
-                console.log(`${key}:`, value);
-            }
-
-            // Dispatch the createArtifax action to send the data
-            dispatch(
-                createArtifax(formData)
-                // Uncomment to handle post-success actions
-                // .then(() => {
-                //     setTitle("");
-                //     setDescription("");
-                //     setImage(null);
-                //     setError(null);  // Reset form on success
-                //     navigate("/artifax");
-                // })
-                // .catch((err) => {
-                //     setError("Error uploading artifax. Please try again.");
-                //     console.error(err);
-                // })
-            );
-        } catch (err) {
-            setError("Error converting image to binary.");
-            console.error(err);
+            const res = await dispatch(createArtifax(formData));
+            setNewFax(res);
+            console.log("New Fax created:", res);
+        } catch (error) {
+            setError("An error occurred, unable to generate image.");
+            console.error(error);
         }
     };
 
     return (
         <div>
-            <h2>Create New Artifax</h2>
+            <div>
+                <h1>Create New Artifax</h1>
+                <h2> Collaborative Art With a Robot!</h2>
+            </div>
             {error && <p>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
@@ -117,17 +70,34 @@ export default function CreateFax() {
                     />
                 </div>
                 <div>
-                    <label htmlFor="image">Upload Image</label>
-                    <input
-                        type="file"
-                        id="image"
-                        accept="image/*"
-                        onChange={handleImageChange}
+                    <label htmlFor="prompt">Enter Prompt</label>
+                    <textarea
+                        id="prompt"
+                        value={prompt}
+                        onChange={(e) => setPrompt(e.target.value)}
                         required
                     />
                 </div>
-                <button type="submit">Submit</button>
+                <button type="submit" disabled={loading}>Generate</button>
             </form>
+
+            {loading && (
+                <div className={styles.spinnerContainer}>
+                    <div className={styles.spinner}></div>
+                    <p>Generating image...</p>
+                </div>
+            )}
+
+            {error && <p>Error: {error}</p>}
+
+            {newFax && (
+                <div>
+                    <h3>Generated Image</h3>
+                    <div className={styles.imageContainer}>
+                        <img className={styles.image} src={newFax.image} alt="New Artifax" />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

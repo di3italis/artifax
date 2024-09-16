@@ -16,7 +16,7 @@ class Artifax(db.Model):
         __table_args__ = {"schema": SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    image = db.Column(db.String(500000), nullable=False)
+    image = db.Column(db.String(1000), nullable=False)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(255))
     # price = db.Column(db.Float, nullable=False)
@@ -40,8 +40,6 @@ class Artifax(db.Model):
             "title": self.title,
             "description": self.description,
             # "price": self.price,
-            # "created_at": self.created_at,
-            # "updated_at": self.updated_at,
             "created_at": self.created_at.strftime("%y%m%d:%H%M%S")
             if self.created_at
             else None,

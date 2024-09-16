@@ -19,7 +19,7 @@ export default function DeleteFaxModal({ faxId, owner_id }) {
         console.log("Delete Fax ID:", faxId);
         await dispatch(deleteArtifax(faxId));
         closeModal();
-        navigate("/artifax"); // Navigate to the AllFax page after deletion
+        navigate("/artifax/my-artifax"); // Navigate to the AllFax page after deletion
     }
 
     const handleKeepFax = () => {

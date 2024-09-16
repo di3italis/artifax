@@ -5,7 +5,11 @@ import { getCookie } from "./utils";
 // --------------CONSTANTS----------------
 const GET_ARTIFAX = "artifax/GET_ARTIFAX";
 const GET_ARTIFAX_DETAILS = "artifax/GET_ARTIFAX_DETAILS";
+const IMAGE_GENERATE_REQUEST = "artifax/IMAGE_GENERATE_REQUEST";
+const IMAGE_GENERATE_SUCCESS = "artifax/IMAGE_GENERATE_SUCCESS";
+const IMAGE_GENERATE_FAILURE = "artifax/IMAGE_GENERATE_FAILURE";
 const CREATE_ARTIFAX = "artifax/CREATE_ARTIFAX";
+const MY_ARTIFAX = "artifax/MY_ARTIFAX";
 const UPDATE_ARTIFAX = "artifax/EDIT_ARTIFAX";
 const DELETE_ARTIFAX = "artifax/DELETE_ARTIFAX";
 const ERROR = "artifax/ERROR";
@@ -14,12 +18,12 @@ const ERROR = "artifax/ERROR";
 //
 
 // --------------GET ARTIFAX ACTION----------------
-export const getAction= (payload) => {
+export const getAction = (payload) => {
     return {
         type: GET_ARTIFAX,
         payload,
     };
-}
+};
 
 // --------------GET ARTIFAX DETAILS ACTION----------------
 export const detailAction = (payload) => {
@@ -27,15 +31,29 @@ export const detailAction = (payload) => {
         type: GET_ARTIFAX_DETAILS,
         payload,
     };
-}
+};
 
-// --------------CREATE ARTIFAX ACTION----------------
+// --------------CREATE ARTIFAX ACTIONS----------------
 export const createAction = (payload) => {
     return {
         type: CREATE_ARTIFAX,
         payload,
     };
+};
+
+export const imageReqAction = () => {
+    return {
+        type: IMAGE_GENERATE_REQUEST,
+    };
 }
+
+// --------------MY ARTIFAX ACTION----------------
+export const myArtifaxAction = (payload) => {
+    return {
+        type: MY_ARTIFAX,
+        payload,
+    };
+};
 
 // --------------UPDATE ARTIFAX ACTION----------------
 export const editAction = (payload) => {
@@ -43,7 +61,7 @@ export const editAction = (payload) => {
         type: UPDATE_ARTIFAX,
         payload,
     };
-}
+};
 
 // --------------DELETE ARTIFAX ACTION----------------
 export const deleteAction = (faxId) => {
@@ -51,7 +69,7 @@ export const deleteAction = (faxId) => {
         type: DELETE_ARTIFAX,
         faxId,
     };
-}
+};
 
 // --------------ERROR ACTION----------------
 export const errorAction = (payload) => {
@@ -59,7 +77,7 @@ export const errorAction = (payload) => {
         type: ERROR,
         payload,
     };
-}
+};
 
 // --------------THUNKS----------------
 //
@@ -71,114 +89,91 @@ export const getArtifax = () => async (dispatch) => {
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRFToken": getCookie("csrftoken"),
-            }
+            },
         });
         if (res.ok) {
             const data = await res.json();
-            console.log("Fetched data.artifax:", data.artifax)
-            console.log("Fetched data:", data)
+            console.log("Fetched data.artifax:", data.artifax);
+            console.log("Fetched data:", data);
             dispatch(getAction(data.artifax));
         }
-    }
-    catch (error) {
+    } catch (error) {
         console.error("ERROR IN getARTIFAX", error);
         dispatch(errorAction(error));
     }
- 
-}
+};
 
 // --------------GET ARTIFAX DETAILS THUNK----------------
 export const getArtifaxDetails = (faxId) => async (dispatch) => {
     try {
-        console.log("enter try block")
+        console.log("enter try block");
         const res = await fetch(`/api/artifax/${faxId}`, {
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRFToken": getCookie("csrftoken"),
-            }
+            },
         });
         if (res.ok) {
             const data = await res.json();
-            console.log("get deets data:", data)
+            console.log("get deets data:", data);
             dispatch(detailAction(data.fax));
         }
-    }
-    catch (error) {
+    } catch (error) {
         console.error("ERROR IN getARTIFAXDETAILS", error);
         dispatch(errorAction(error));
     }
-}
+};
 
 // --------------CREATE ARTIFAX THUNK----------------
 export const createArtifax = (formData) => async (dispatch) => {
+    dispatch(imageReqAction());
+
     try {
-        // const apiKey = import.meta.env.IMG_HIPPO_API_KEY;
-        // formData["file"] = image;
-        // formData["api_key"] = "9W1YwT4VSelIHJyR3RYeKKmMlrGGiHJf";
-        // // formData["api_key"] = apiKey;
-        console.log("formData title:", formData.title);
+        const printFormData = structuredClone(formData);
+        console.log("formData:", printFormData);
 
-         const imageUploadResponse = await fetch("/api/artifax/upload_image", {
+        const res = await fetch("/api/artifax/", {
             method: "POST",
-            body: formData,
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: JSON.stringify(formData),
         });
-
-        const imageUploadData = await imageUploadResponse.json();  // Parse the response as JSON
-
-
-        if (imageUploadData.ok && imageUploadData.success) {
-            const imageUrl = imageUploadData.data.url;
-            
-            formData.append("image", imageUrl);
-
-            const artifaxData = {
-                title: formData.title,
-                description: formData.description,
-                image: imageUrl
-            };
-            const res = await fetch("api/artifax", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": getCookie("csrftoken"),
-                },
-                body: JSON.stringify(artifaxData)
-            });
-            if (res.ok) {
-                const data = await res.json();
-                dispatch(createAction(data));
-                return data;
-            } else {
-                const errorData = await res.json();
-                console.log("Failed to create fax:", errorData);
-            }
+        if (res.ok) {
+            const data = await res.json();
+            dispatch(createAction(data));
+            return data;
+        } else {
+            const errorData = await res.json();
+            console.log("Failed to generate image:", errorData);
         }
-        else {
-            console.log("Failed to upload image:", imageUploadData);
-        }
-
-        
-        // const res = await fetch("/api/artifax/", {
-        //     method: "POST",
-        //     headers: {
-        //         "X-CSRFToken": getCookie("csrftoken"),
-        //     },
-        //     body: formData
-        // });
-        // if (res.ok) {
-        //     const data = await res.json();
-        //     dispatch(createAction(data));
-        // } else {
-        //     const errorData = await res.json();
-        //     console.log("Failed to create fax:", errorData);
-        // }
-    }
-    catch (error) {
+    } catch (error) {
         console.error("ERROR IN createARTIFAX", error);
         dispatch(errorAction(error));
         throw error;
     }
-}
+};
+
+// --------------MY ARTIFAX THUNK----------------
+export const myArtifax = (userId) => async (dispatch) => {
+    try {
+        const res = await fetch("/api/artifax/my-artifax", {
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+        });
+        if (res.ok) {
+            const data = await res.json();
+            dispatch(myArtifaxAction(data.artifax));
+            return data.artifax;
+        }
+    } catch (error) {
+        console.error("ERROR IN getMYARTIFAX", error);
+        dispatch(errorAction(error));
+    }
+};
 
 // --------------DELETE ARTIFAX THUNK----------------
 export const deleteArtifax = (faxId) => async (dispatch) => {
@@ -188,20 +183,19 @@ export const deleteArtifax = (faxId) => async (dispatch) => {
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRFToken": getCookie("csrftoken"),
-            }
+            },
         });
         if (res.ok) {
             dispatch(deleteAction(faxId));
         } else {
             const errorData = await res.json();
-            console.log(`Failed to delete fax ${faxId}:`, errorData)
+            console.log(`Failed to delete fax ${faxId}:`, errorData);
         }
-    }
-    catch (error) {
+    } catch (error) {
         console.error("ERROR IN deleteARTIFAX", error);
         dispatch(errorAction(error));
     }
-}
+};
 
 // --------------EDIT ARTIFAX THUNK----------------
 
@@ -220,14 +214,25 @@ export default function artifaxReducer(state = initialState, action) {
         }
         // --------------GET ARTIFAX DETAILS----------------
         case GET_ARTIFAX_DETAILS: {
-            console.log("deet reducer", action.payload)
+            console.log("deet reducer", action.payload);
             const id = action.payload.id;
             return { ...state, [id]: action.payload };
         }
         // --------------CREATE ARTIFAX----------------
+        case IMAGE_GENERATE_REQUEST: {
+            return { ...state, loading: true };
+        }
         case CREATE_ARTIFAX: {
             const newState = structuredClone(state);
             newState[action.payload.id] = action.payload;
+            return { ...newState, loading: false, error: null };
+        }
+        // --------------MY ARTIFAX----------------
+        case MY_ARTIFAX: {
+            const newState = {};
+            action.payload.forEach((artifax) => {
+                newState[artifax.id] = artifax;
+            });
             return newState;
         }
         // // --------------DELETE ARTIFAX----------------
@@ -246,11 +251,10 @@ export default function artifaxReducer(state = initialState, action) {
         case ERROR: {
             return {
                 ...state,
-                error: action.payload,
+                loading: false, error: action.payload,
             };
         }
         default:
             return state;
     }
 }
-

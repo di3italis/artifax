@@ -35,16 +35,6 @@ export default function ArtId() {
         return <div>Loading...</div>;
     }
 
-    // const deleteFax = async () => {
-    //     await dispatch(delete_________(pin.id));
-    //     await dispatch(_________());
-    //     navigate(`/________`);
-    // };
-
-    // const update______ = () => {
-    //     navigate(`/_____/edit/${_____}`);
-    // };
-
     if (!fax) {
         console.log("No Fax found");
         return <div>No Fax found!</div>;
@@ -55,8 +45,8 @@ export default function ArtId() {
             <div key={fax.id}>
                 <div
                     style={{
-                        width: "300px",
-                        height: "200px",
+                        width: "800px",
+                        height: "400px",
                         backgroundImage: `url(${fax.image})`,
                         backgroundSize: "cover",
                         backgroundPosition: "center",
