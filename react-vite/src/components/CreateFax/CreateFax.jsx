@@ -16,9 +16,9 @@ export default function CreateFax() {
     const allFax = useSelector((state) => state.artifax);
     const [newFax, setNewFax] = useState(null);
     //
-    // Memoize the array of artifax to avoid unnecessary re-renders
-    const artifaxArray = useMemo(() => Object.values(allFax) || [], [allFax]);
-    console.log("artifaxArray:", artifaxArray);
+    // // Memoize the array of artifax to avoid unnecessary re-renders
+    // const artifaxArray = useMemo(() => Object.values(allFax) || [], [allFax]);
+    // console.log("artifaxArray:", artifaxArray);
     
     
     const handleSubmit = async (e) => {
@@ -31,7 +31,7 @@ export default function CreateFax() {
 
         try {
             let formData = {};
-        formData = { title, description, prompt };
+            formData = { title, description, prompt };
 
             const res = await dispatch(createArtifax(formData));
             setNewFax(res);

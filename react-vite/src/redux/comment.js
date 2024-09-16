@@ -4,10 +4,12 @@ import { getCookie } from "./utils";
 
 // --------------CONSTANTS----------------
 const GET_COMMENTS = "comments/GET_COMMENTS";
+const ADD_COMMENT_REQUEST = "comments/ADD_COMMENT_REQUEST";
+const ADD_COMMENT_SUCCESS = "comments/ADD_COMMENT_SUCCESS";
+const ADD_COMMENT_FAILURE = "comments/ADD_COMMENT_FAILURE";
 const ADD_COMMENT = "comments/ADD_COMMENT";
 const DELETE_COMMENT = "comments/DELETE_COMMENT";
 const EDIT_COMMENT = "comments/EDIT_COMMENT";
-const LOADING = "comments/LOADING";
 const ERROR = "comments/ERROR";
 
 // --------------ACTIONS----------------
@@ -25,6 +27,12 @@ export const addCommentAction = (payload) => {
     return {
         type: ADD_COMMENT,
         payload,
+    };
+};
+
+export const addCommentRequestAction = () => {
+    return {
+        type: ADD_COMMENT_REQUEST,
     };
 };
 
@@ -93,8 +101,11 @@ export const getComments = (faxId) => async (dispatch) => {
 
 // --------------ADD COMMENT THUNK----------------
 export const addComment = (formData) => async (dispatch) => {
-    dispatch(loadingAction());
+    dispatch(addCommentRequestAction());
     try {
+        const printFormData = structuredClone(formData);
+        console.log("comment formData", printFormData);
+
         const res = await fetch(`/api/comments/`, {
             method: "POST",
             headers: {
@@ -105,8 +116,8 @@ export const addComment = (formData) => async (dispatch) => {
         });
         if (res.ok) {
             const data = await res.json();
-            dispatch(addCommentAction(data.comment));
-            console.log("flask comment data", data.comment)
+            dispatch(addCommentAction(data));
+            return data;
         } else {
             const errorData = await res.json();
             console.log("Failed to add comment:", errorData);
@@ -167,9 +178,7 @@ const initialState = {};
 
 export default function commentsReducer(state = initialState, action) {
     switch (action.type) {
-        case LOADING: {
-            return { ...state, loading: true };
-        }
+        
         // --------------GET COMMENTS----------------
         case GET_COMMENTS: {
             const newState = {...state, loading: false};
@@ -181,17 +190,13 @@ export default function commentsReducer(state = initialState, action) {
             return newState;
         }
         // --------------ADD COMMENT----------------
+        case ADD_COMMENT_REQUEST: {
+            return { ...state, loading: true };
+        }
         case ADD_COMMENT: {
-            // const newState = structuredClone(state);
-            const newState = { ...state, loading: false};
-            const comment = action.payload;
-            if (comment && comment.id) {
-                newState[comment.id] = comment;
-            } else {
-                console.error("Invalid comment data:", comment);
-                return { ...state, loading: false, error: "Invalid comment data" };
-            }
-            return newState;
+            const newState = structuredClone(state);
+            newState[action.payload.id] = action.payload;
+            return { ...newState, loading: false, error: null };
         }
         // --------------DELETE COMMENT----------------
         case DELETE_COMMENT: {
@@ -209,6 +214,7 @@ export default function commentsReducer(state = initialState, action) {
         case ERROR: {
             return {
                 ...state,
+                loading: false,
                 error: action.payload,
             };
         }

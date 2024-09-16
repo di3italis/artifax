@@ -1,31 +1,36 @@
 // AddCommentModal.jsx
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addComment } from "../../redux/comment"; // Assuming you have an addComment thunk
+import { useDispatch, useSelector } from "react-redux";
+import { addComment } from "../../redux/comment";
 import { useModal } from "../../context/Modal";
-import styles from "./AddCommentModal.module.css"; // You can reuse or create new styles
+import styles from "./AddCommentModal.module.css";
 
 export default function AddCommentModal({ faxId }) {
     const dispatch = useDispatch();
+    const [text, setText] = useState("");
+    const { loading } = useSelector((state) => state);
+    const [error, setError] = useState(null);
     const { closeModal } = useModal();
 
-    const [text, setText] = useState("");
-    const [error, setError] = useState(null);
+
 
     // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!text.trim()) {
+        if (!text) {
             setError("Comment text is required.");
             return;
         }
 
-        const formData = { faxId, text };
 
         try {
-            await dispatch(addComment(formData)); // Dispatch the addComment action to add the new comment
-            closeModal(); // Close the modal after successful submission
+            let formData = {};
+            formData = { faxId, text }
+
+            const res = await dispatch(addComment(formData));
+            setText(res);
+            console.log("New Comment created:", res);
         } catch (error) {
             setError("An error occurred while adding the comment.");
             console.error(error);
@@ -46,7 +51,7 @@ export default function AddCommentModal({ faxId }) {
                         required
                     />
                 </div>
-                <button type="submit">Add Comment</button>
+                <button type="submit" onClick={handleSubmit}>Add Comment</button>
                 <button type="button" onClick={closeModal}>Cancel</button>
             </form>
         </div>

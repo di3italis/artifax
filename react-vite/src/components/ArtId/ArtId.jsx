@@ -51,7 +51,7 @@ export default function ArtId() {
     }
 
     // const commentsArray = Object.values(comments);
-    console.log("commentsArray:", commentsArray);
+    // console.log("commentsArray:", commentsArray);
     // const commentsArray = useMemo(() => Object.values(comments) || [], [comments]);
 
     return (
@@ -122,6 +122,12 @@ export default function ArtId() {
                 ) : (
                     <p>No comments yet.</p>
                 )}
+            {loading && (
+                <div className={styles.spinnerContainer}>
+                    <div className={styles.spinner}></div>
+                    <p>Generating image...</p>
+                </div>
+            )}
                 {/* Add Comment Button */}
                 {currentUser && (
                     <OpenModalButton
