@@ -41,8 +41,8 @@ artifax_img_urls = [
     "https://i.ibb.co/4NcjGfp/8.jpg",
     "https://i.ibb.co/7td7DGx/9.jpg",
     "https://i.ibb.co/JKT0rNW/test-In-Prod.png",
-    "https://ibb.co/Vw573Wk",
-    "https://ibb.co/1LTJQ1z",
+    "https://i.ibb.co/NTb876G/apocalypse.png",
+    "https://i.ibb.co/CzQs8gP/please-Prod.png",
 ]
 
 artifax_titles = [

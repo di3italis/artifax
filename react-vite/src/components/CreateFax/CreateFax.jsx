@@ -1,5 +1,5 @@
 // CreateFax.jsx
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createArtifax } from "../../redux/artifax";
 import styles from './CreateFax.module.css';
@@ -14,11 +14,6 @@ export default function CreateFax() {
     const [error, setError] = useState(null);
     const allFax = useSelector((state) => state.artifax);
     const [newFax, setNewFax] = useState(null);
-    //
-    // Memoize the array of artifax to avoid unnecessary re-renders
-    const artifaxArray = useMemo(() => Object.values(allFax) || [], [allFax]);
-    console.log("artifaxArray:", artifaxArray);
-
 
     // // Memoize the array of artifax to avoid unnecessary re-renders
     // const artifaxArray = useMemo(() => Object.values(allFax) || [], [allFax]);
