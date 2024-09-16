@@ -26,3 +26,6 @@ class Config:
 
     # img hippo api
     IMG_HIPPO_API_KEY = os.environ.get("IMG_HIPPO_API_KEY")
+
+    # openai api
+    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
