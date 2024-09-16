@@ -1,5 +1,5 @@
 // CreateFax.jsx
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createArtifax } from "../../redux/artifax";
 import styles from './CreateFax.module.css';
