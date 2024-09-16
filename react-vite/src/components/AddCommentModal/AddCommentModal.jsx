@@ -28,8 +28,8 @@ export default function AddCommentModal({ faxId }) {
             formData = { faxId, text }
 
             const res = await dispatch(addComment(formData));
-            setText(res);
             console.log("New Comment created:", res);
+            closeModal();
         } catch (error) {
             setError("An error occurred while adding the comment.");
             console.error(error);

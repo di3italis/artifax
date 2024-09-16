@@ -23,3 +23,12 @@ h3 {
     font-size: 1em;
     font-style: italic;
 }
+
+.imageContainer {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    border-radius: 0.5em;
+    object-fit: cover;
+    overflow: hidden;
+}

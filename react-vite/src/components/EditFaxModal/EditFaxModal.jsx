@@ -47,10 +47,10 @@ export default function EditFaxModal({ faxId }) {
     };
 
     return (
-        <div className={styles.editFaxModal}>
+        <div>
             <h2>Edit Artifax</h2>
             {error && <p className={styles.error}>{error}</p>}
-            <form onSubmit={handleSubmit}>
+            <form   className={styles.editFaxModal} onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="title">Title</label>
                     <input

@@ -60,7 +60,7 @@ export default function ArtId() {
             <div key={fax.id}>
                 <div
                     style={{
-                        width: "800px",
+                        width: "100%",
                         height: "400px",
                         backgroundImage: `url(${fax.image})`,
                         backgroundSize: "cover",
