@@ -18,14 +18,14 @@ function Navigation({ isLoaded }) {
                 </NavLink>
             </li>
             <ul className="navLinks">
-                <li>
+                <li className="myLink">
                     {sessionUser && (
                         <NavLink className="navlink" to="artifax/create">
                             Create a New Artifax
                         </NavLink>
                     )}
                 </li>
-                <li>
+                <li className="myLink">
                     {sessionUser && (
                         <NavLink className="navlink" to="artifax/my-artifax">
                             My Artifax
@@ -33,7 +33,7 @@ function Navigation({ isLoaded }) {
                     )}
                 </li>
                 {isLoaded && (
-                    <li>
+                    <li className="navLink">
                         <ProfileButton user={sessionUser} />
                     </li>
                 )}

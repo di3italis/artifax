@@ -26,10 +26,11 @@ class Artifax(db.Model):
     )
 
     owner_id = db.Column(db.Integer, ForeignKey(add_prefix_for_prod("users.id")))
+    owner = db.relationship("User", back_populates="artifax")
 
     # labels = relationship("Label", back_populates="artifax")
     # likes = relationship("Review", back_populates="artifax")
-    comments = relationship(
+    comments = db.relationship(
         "Comment", back_populates="artifax", cascade="all, delete-orphan"
     )
 
@@ -38,6 +39,7 @@ class Artifax(db.Model):
         return {
             "id": self.id,
             "owner_id": self.owner_id,
+            "username": self.owner.username,
             "image": self.image,
             "title": self.title,
             "description": self.description,

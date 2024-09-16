@@ -1,30 +1,4 @@
 // Home.jsx splash page
-// import { useDispatch, useSelector } from "react-redux";
-// import { getArtifax } from "../../redux/artifax";
-// import FaxCard from "../FaxCard";
-//
-// import styles from "./Home.module.css";
-//
-// export default function Home() {
-//     const dispatch = useDispatch();
-//     const [loading, setLoading] = useState(true);
-//     const allFax = useSelector((state) => state.artifax);
-//
-//     // Memoize the array of artifax to avoid unnecessary re-renders
-//     const artifaxArray = useMemo(() => Object.values(allFax) || [], [allFax]);
-//
-//     useEffect(() => {
-//         dispatch(getArtifax());
-//     }, [dispatch]);
-//
-//     return (
-//         <div className={styles.main}>
-//             {allFax && Object.values(allFax).map((fax) => (
-//                 <FaxCard key={fax.id} fax={fax} />
-//             ))}
-//         </div>
-//     );
-// }
 
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,13 +24,13 @@ export default function SplashPage() {
         return null;
     }, [artifaxArray]);
 
-    useEffect(() => {
+    useEffect([dispatch], () => {
         const loadFax = async () => {
             await dispatch(getArtifax());
             setLoading(false);
         };
         loadFax();
-    }, [dispatch]);
+    });
 
     if (loading) {
         return <div>Loading...</div>;
@@ -68,8 +42,10 @@ export default function SplashPage() {
 
     return (
         <div className={styles.homeContainer}>
-            <h1>Welcome to ARTiFAX!</h1>
-            <p>Click the image below to see all the ARTiFAX!</p>
+            <div className={styles.header}>
+                <h1>Welcome to ARTiFAX!</h1>
+                <div className={styles.subtitle}>Click the image below to see all the ARTiFAX!</div>
+            </div>
 
             {/* Render the randomly selected FaxCard */}
             <FaxCard fax={randomFax} navAll={true}/>

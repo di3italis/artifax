@@ -36,6 +36,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 1.25rem;
+    color: white;
 }
 
 .location {
@@ -58,6 +60,7 @@
     font-size: 1rem;
     text-align: center;
     /* margin-top: 12px; */
+    color: white;
 }
 
 .price {

@@ -19,10 +19,10 @@ export default function FaxCard({ fax, navAll }) {
                 </div>
                 <div className={styles.info}>
                     <div className={styles.topRow}>
-                        <div>FaxCard </div>
+                        <div>{fax.title}</div>
                     </div>
                     <div className={styles.bottomRow}>
-                        <div>Fax ID: {fax.id}</div>
+                        <div>artifax by: {fax.username}</div>
                     </div>
                 </div>
             </Link>

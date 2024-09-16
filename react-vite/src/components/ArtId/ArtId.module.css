@@ -1,0 +1,25 @@
+h2 {
+    color: red;
+    font-size: 2em;
+}
+
+p {
+    color: white;
+    font-size: 1.25em;
+}
+
+h3 {
+    color: green;
+    font-size: 1.5em;
+}
+
+.comment {
+    color: white;
+    font-size: 1em;
+}
+
+.user {
+    color: green;
+    font-size: 1em;
+    font-style: italic;
+}
