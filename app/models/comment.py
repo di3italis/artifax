@@ -1,3 +1,4 @@
+# models/comment.py
 from datetime import datetime
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship

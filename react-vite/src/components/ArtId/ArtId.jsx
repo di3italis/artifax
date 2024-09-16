@@ -1,12 +1,13 @@
 // ArtId.jsx
 import { useEffect, useState, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getArtifaxDetails } from "../../redux/artifax";
 import { getComments } from "../../redux/comment";
 import OpenModalButton from "../OpenModalButton";
 import EditFaxModal from "../EditFaxModal/EditFaxModal.jsx";
 import DeleteFaxModal from "../DeleteFaxModal";
+import AddCommentModal from "../AddCommentModal";
 import EditCommentModal from "../EditCommentModal";
 import DeleteCommentModal from "../DeleteCommentModal";
 // import styles here
@@ -16,10 +17,11 @@ export default function ArtId() {
     const faxId = parseInt(faxIdStr, 10);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
-    const allComments = useSelector((state) => state.comments);
-    const navigate = useNavigate();
 
     const fax = useSelector((state) => state.artifax[faxId]);
+    const allComments = useSelector((state) => state.comments);
+    const loadingComments = useSelector((state) => state.comments.loading);
+
     const currentUser = useSelector((state) => state.session.user);
 
     const commentsArray = useMemo(() => Object.values(allComments) || [], [allComments]);
@@ -27,11 +29,7 @@ export default function ArtId() {
 
     useEffect(() => {
         const loadComments = async () => {
-            const res = await dispatch(getComments(faxId));
-            if (res && res.comments) {
-                console.log("Comments fetched, state update", res.comments);
-                setComments(res.comments);
-            }
+            await dispatch(getComments(faxId));
         }
     
         const loadFax = async () => {
@@ -44,7 +42,6 @@ export default function ArtId() {
     }, [dispatch, faxId]);
 
     if (loading) {
-        console.log("Loading...");
         return <div>Loading...</div>;
     }
 
@@ -72,6 +69,7 @@ export default function ArtId() {
                 <h2>{fax.title}</h2>
                 <p>{fax.description}</p>
             </div>
+
             {currentUser?.id === fax.owner_id && (
                 <OpenModalButton
                     buttonText={"Delete Artifax"}
@@ -89,7 +87,9 @@ export default function ArtId() {
             <div>
                 <h3>Comments</h3>
                 {commentsArray.length > 0 ? (
-                    commentsArray.map((comment) => (
+                    commentsArray
+                    .filter(comment => comment && comment.id)
+                        .map((comment) => (
                         <div key={comment.id}>
                             <p>{comment.text}</p>
                             <p>User {comment.username}</p>
@@ -121,6 +121,13 @@ export default function ArtId() {
                     ))
                 ) : (
                     <p>No comments yet.</p>
+                )}
+                {/* Add Comment Button */}
+                {currentUser && (
+                    <OpenModalButton
+                        buttonText={"Add Comment"}
+                        modalComponent={<AddCommentModal faxId={faxId} />}
+                    />
                 )}
             </div>
 

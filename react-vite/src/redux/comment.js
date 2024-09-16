@@ -4,9 +4,10 @@ import { getCookie } from "./utils";
 
 // --------------CONSTANTS----------------
 const GET_COMMENTS = "comments/GET_COMMENTS";
-const CREATE_COMMENT = "comments/CREATE_COMMENT";
+const ADD_COMMENT = "comments/ADD_COMMENT";
 const DELETE_COMMENT = "comments/DELETE_COMMENT";
 const EDIT_COMMENT = "comments/EDIT_COMMENT";
+const LOADING = "comments/LOADING";
 const ERROR = "comments/ERROR";
 
 // --------------ACTIONS----------------
@@ -19,10 +20,10 @@ export const getCommentsAction = (payload) => {
     };
 };
 
-// --------------CREATE COMMENT ACTION----------------
-export const createCommentAction = (payload) => {
+// --------------ADD COMMENT ACTION----------------
+export const addCommentAction = (payload) => {
     return {
-        type: CREATE_COMMENT,
+        type: ADD_COMMENT,
         payload,
     };
 };
@@ -40,6 +41,13 @@ export const editCommentAction = (payload) => {
     return {
         type: EDIT_COMMENT,
         payload,
+    };
+};
+
+// --------------LOADING ACTION----------------
+export const loadingAction = () => {
+    return {
+        type: LOADING,
     };
 };
 
@@ -64,8 +72,18 @@ export const getComments = (faxId) => async (dispatch) => {
         });
         if (res.ok) {
             const data = await res.json();
-            console.log("comments data.comments", data.comments);
-            dispatch(getCommentsAction(data.comments));
+
+            if (data && data.comments) {
+                console.log("comments data.comments", data.comments);
+                dispatch(getCommentsAction(data.comments));
+            } else {
+                console.error("Invalid comments data:", data);
+                dispatch(errorAction("Invalid comments data"));
+            }
+        } else {
+            const errorData = await res.json();
+            console.log("Failed to add comments:", errorData);
+            dispatch(errorAction(errorData));
         }
     } catch (error) {
         console.error("ERROR IN getCOMMENTS", error);
@@ -73,8 +91,9 @@ export const getComments = (faxId) => async (dispatch) => {
     }
 };
 
-// --------------CREATE COMMENT THUNK----------------
-export const createComment = (formData) => async (dispatch) => {
+// --------------ADD COMMENT THUNK----------------
+export const addComment = (formData) => async (dispatch) => {
+    dispatch(loadingAction());
     try {
         const res = await fetch(`/api/comments/`, {
             method: "POST",
@@ -86,13 +105,14 @@ export const createComment = (formData) => async (dispatch) => {
         });
         if (res.ok) {
             const data = await res.json();
-            dispatch(createCommentAction(data.comment));
+            dispatch(addCommentAction(data.comment));
+            console.log("flask comment data", data.comment)
         } else {
             const errorData = await res.json();
-            console.log("Failed to create comment:", errorData);
+            console.log("Failed to add comment:", errorData);
         }
     } catch (error) {
-        console.error("ERROR IN createCOMMENT", error);
+        console.error("ERROR IN addCOMMENT", error);
         dispatch(errorAction(error));
     }
 };
@@ -147,18 +167,30 @@ const initialState = {};
 
 export default function commentsReducer(state = initialState, action) {
     switch (action.type) {
+        case LOADING: {
+            return { ...state, loading: true };
+        }
         // --------------GET COMMENTS----------------
         case GET_COMMENTS: {
-            const newState = {};
+            const newState = {...state, loading: false};
             action.payload.forEach((comment) => {
-                newState[comment.id] = comment;
+                if (comment && comment.id) {
+                    newState[comment.id] = comment;
+                }
             });
             return newState;
         }
-        // --------------CREATE COMMENT----------------
-        case CREATE_COMMENT: {
-            const newState = structuredClone(state);
-            newState[action.payload.id] = action.payload;
+        // --------------ADD COMMENT----------------
+        case ADD_COMMENT: {
+            // const newState = structuredClone(state);
+            const newState = { ...state, loading: false};
+            const comment = action.payload;
+            if (comment && comment.id) {
+                newState[comment.id] = comment;
+            } else {
+                console.error("Invalid comment data:", comment);
+                return { ...state, loading: false, error: "Invalid comment data" };
+            }
             return newState;
         }
         // --------------DELETE COMMENT----------------

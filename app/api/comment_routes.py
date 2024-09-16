@@ -38,7 +38,7 @@ def create_comment():
     data = request.get_json()
 
     text = data.get("text")
-    artifax_id = data.get("artifax_id")
+    artifax_id = data.get("faxId")
 
     # Validation
     errors = {}
