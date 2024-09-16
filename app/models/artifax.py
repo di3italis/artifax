@@ -29,7 +29,7 @@ class Artifax(db.Model):
 
     # labels = relationship("Label", back_populates="artifax")
     # likes = relationship("Review", back_populates="artifax")
-    # comments = relationship("Comment", back_populates="artifax")
+    comments = relationship("Comment", back_populates="artifax")
 
     def to_dict(self):
         """Return a dictionary representation of the object"""
@@ -48,5 +48,5 @@ class Artifax(db.Model):
             else None,
             # "labels": [label.to_dict() for label in self.labels],
             # "likes": [like.to_dict() for like in self.likes],
-            # "comments": [comment.to_dict() for comment in self.comments],
+            "comments": [comment.to_dict() for comment in self.comments],
         }
