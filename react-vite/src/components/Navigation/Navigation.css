@@ -12,6 +12,7 @@
   /* grid-template-columns: 1fr 5fr 2fr 1fr; */
   cursor: default;
   padding-bottom: 10px;
+  background-color: #181A1B;
 }
 
 .navLinks {
@@ -40,7 +41,7 @@ h1 {
 }
 
 div {
-  background-color: #181A1B;
+  /* background-color: #181A1B; */
 }
 
 .logoLink {

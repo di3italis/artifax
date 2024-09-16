@@ -61,7 +61,7 @@ export default function MyArtifax() {
 
     return (
         <div className={styles.main}>
-            <h1>My Artifax</h1>
+            <div className={styles.pageTitle}>My Artifax</div>
             {!loading && artifaxArray && artifaxArray.map((fax) => (
                 <FaxCard key={fax.id} fax={fax} />
             ))}

@@ -42,16 +42,17 @@ export default function CreateFax() {
     };
 
     return (
-        <div>
+        <div className={styles.main}>
             <div>
-                <h1>Create New Artifax</h1>
-                <h2> Collaborative Art With a Robot!</h2>
+                <div className={styles.pageTitle}>Create New Artifax</div>
+                <h2 className={styles.subtitle}> Collaborative Art With a Robot!</h2>
             </div>
             {error && <p>{error}</p>}
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className="{styles.field}">
                     <label htmlFor="title">Title</label>
                     <input
+                        className={styles.title}
                         type="text"
                         id="title"
                         value={title}
@@ -62,6 +63,7 @@ export default function CreateFax() {
                 <div>
                     <label htmlFor="description">Description</label>
                     <textarea
+                        className={styles.desc}
                         id="description"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -71,6 +73,7 @@ export default function CreateFax() {
                 <div>
                     <label htmlFor="prompt">Enter Prompt</label>
                     <textarea
+                        className={styles.prompt}
                         id="prompt"
                         value={prompt}
                         onChange={(e) => setPrompt(e.target.value)}
