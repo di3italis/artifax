@@ -24,14 +24,16 @@ export default function ArtId() {
 
     const currentUser = useSelector((state) => state.session.user);
 
-    const commentsArray = useMemo(() => Object.values(allComments) || [], [allComments]);
-
+    const commentsArray = useMemo(
+        () => Object.values(allComments) || [],
+        [allComments]
+    );
 
     useEffect(() => {
         const loadComments = async () => {
             await dispatch(getComments(faxId));
-        }
-    
+        };
+
         const loadFax = async () => {
             await dispatch(getArtifaxDetails(faxId));
             setLoading(false);
@@ -73,9 +75,14 @@ export default function ArtId() {
             {currentUser?.id === fax.owner_id && (
                 <OpenModalButton
                     buttonText={"Delete Artifax"}
-                    modalComponent={<DeleteFaxModal faxId={fax.id} owner_id={fax.owner_id} />}
+                    modalComponent={
+                        <DeleteFaxModal
+                            faxId={fax.id}
+                            owner_id={fax.owner_id}
+                        />
+                    }
                 />
-            )} 
+            )}
 
             {currentUser?.id === fax.owner_id && (
                 <OpenModalButton
@@ -88,46 +95,46 @@ export default function ArtId() {
                 <h3>Comments</h3>
                 {commentsArray.length > 0 ? (
                     commentsArray
-                    .filter(comment => comment && comment.id)
+                        .filter((comment) => comment && comment.id)
                         .map((comment) => (
-                        <div key={comment.id}>
-                            <p>{comment.text}</p>
-                            <p>User {comment.username}</p>
+                            <div key={comment.id}>
+                                <p>{comment.text}</p>
+                                <p>User {comment.username}</p>
 
-                            {currentUser?.id === comment.owner_id && (
-                                <>
-                                    <OpenModalButton
-                                        buttonText={"Edit Comment"}
-                                        modalComponent={
-                                            <EditCommentModal 
-                                                commentId={comment.id} 
-                                                owner_id={comment.owner_id} 
-                                                text={comment.text} 
-                                            />
-                                        }
-                                    />
-                                    <OpenModalButton
-                                        buttonText={"Delete Comment"}
-                                        modalComponent={
-                                            <DeleteCommentModal 
-                                                commentId={comment.id} 
-                                                owner_id={comment.owner_id} 
-                                            />
-                                        }
-                                    />
-                                </>
-                            )}
-                        </div>
-                    ))
+                                {currentUser?.id === comment.owner_id && (
+                                    <>
+                                        <OpenModalButton
+                                            buttonText={"Edit Comment"}
+                                            modalComponent={
+                                                <EditCommentModal
+                                                    commentId={comment.id}
+                                                    owner_id={comment.owner_id}
+                                                    text={comment.text}
+                                                />
+                                            }
+                                        />
+                                        <OpenModalButton
+                                            buttonText={"Delete Comment"}
+                                            modalComponent={
+                                                <DeleteCommentModal
+                                                    commentId={comment.id}
+                                                    owner_id={comment.owner_id}
+                                                />
+                                            }
+                                        />
+                                    </>
+                                )}
+                            </div>
+                        ))
                 ) : (
                     <p>No comments yet.</p>
                 )}
-            {loading && (
-                <div className={styles.spinnerContainer}>
-                    <div className={styles.spinner}></div>
-                    <p>Generating image...</p>
-                </div>
-            )}
+                {loading && (
+                    <div className={styles.spinnerContainer}>
+                        <div className={styles.spinner}></div>
+                        <p>Generating image...</p>
+                    </div>
+                )}
                 {/* Add Comment Button */}
                 {currentUser && (
                     <OpenModalButton
@@ -136,7 +143,6 @@ export default function ArtId() {
                     />
                 )}
             </div>
-
         </div>
-    ); 
+    );
 }

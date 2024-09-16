@@ -2,8 +2,7 @@
 import { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createArtifax } from "../../redux/artifax";
-import { useNavigate } from "react-router-dom";
-import styles from './CreateFax.module.css'; 
+import styles from './CreateFax.module.css';
 
 
 export default function CreateFax() {
@@ -16,11 +15,16 @@ export default function CreateFax() {
     const allFax = useSelector((state) => state.artifax);
     const [newFax, setNewFax] = useState(null);
     //
+    // Memoize the array of artifax to avoid unnecessary re-renders
+    const artifaxArray = useMemo(() => Object.values(allFax) || [], [allFax]);
+    console.log("artifaxArray:", artifaxArray);
+
+
     // // Memoize the array of artifax to avoid unnecessary re-renders
     // const artifaxArray = useMemo(() => Object.values(allFax) || [], [allFax]);
     // console.log("artifaxArray:", artifaxArray);
-    
-    
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 

@@ -5,8 +5,8 @@ import { getCookie } from "./utils";
 const GET_ARTIFAX = "artifax/GET_ARTIFAX";
 const GET_ARTIFAX_DETAILS = "artifax/GET_ARTIFAX_DETAILS";
 const IMAGE_GENERATE_REQUEST = "artifax/IMAGE_GENERATE_REQUEST";
-const IMAGE_GENERATE_SUCCESS = "artifax/IMAGE_GENERATE_SUCCESS";
-const IMAGE_GENERATE_FAILURE = "artifax/IMAGE_GENERATE_FAILURE";
+// const IMAGE_GENERATE_SUCCESS = "artifax/IMAGE_GENERATE_SUCCESS";
+// const IMAGE_GENERATE_FAILURE = "artifax/IMAGE_GENERATE_FAILURE";
 const CREATE_ARTIFAX = "artifax/CREATE_ARTIFAX";
 const MY_ARTIFAX = "artifax/MY_ARTIFAX";
 const EDIT_ARTIFAX = "artifax/EDIT_ARTIFAX";
@@ -44,7 +44,7 @@ export const imageReqAction = () => {
     return {
         type: IMAGE_GENERATE_REQUEST,
     };
-}
+};
 
 // --------------MY ARTIFAX ACTION----------------
 export const myArtifaxAction = (payload) => {
@@ -154,7 +154,7 @@ export const createArtifax = (formData) => async (dispatch) => {
 };
 
 // --------------MY ARTIFAX THUNK----------------
-export const myArtifax = (userId) => async (dispatch) => {
+export const myArtifax = () => async (dispatch) => {
     try {
         const res = await fetch("/api/artifax/my-artifax", {
             headers: {
@@ -269,7 +269,8 @@ export default function artifaxReducer(state = initialState, action) {
         case ERROR: {
             return {
                 ...state,
-                loading: false, error: action.payload,
+                loading: false,
+                error: action.payload,
             };
         }
         default:
