@@ -1,6 +1,6 @@
 // ArtId.jsx
 import { useEffect, useState, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getArtifaxDetails } from "../../redux/artifax";
 import OpenModalButton from "../OpenModalButton";
@@ -15,7 +15,6 @@ export default function ArtId() {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
 
-    const navigate = useNavigate();
     const fax = useSelector((state) => state.artifax[faxId]);
     // const comments = useSelector((state) => state.artifax.comments);
     // const [comments, setComments] = useState([]);
@@ -77,14 +76,14 @@ export default function ArtId() {
                 buttonText={"Delete"}
                 modalComponent={<DeleteFaxModal faxId={fax.id}  owner_id={fax.owner_id}/>}
             />
-            )} 
+            )}
 
             {currentUser?.id === fax.owner_id && (
             <OpenModalButton
                 buttonText={"Edit"}
                 modalComponent={<EditFaxModal faxId={fax.id}/>}
             />
-            )} 
+            )}
         </div>
     );
 }

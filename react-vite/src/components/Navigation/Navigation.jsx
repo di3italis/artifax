@@ -7,7 +7,6 @@ import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector((state) => state.session.user);
-    const userId = sessionUser?.id;
 
     return (
         <ul className="navContainer">
