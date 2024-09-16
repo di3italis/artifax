@@ -9,7 +9,6 @@ from .models import db, User
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.artifax_routes import artifax_routes
-from .api.proxy_routes import proxy_routes  # Import the proxy route
 
 # from .api.comment_routes import comment_routes
 
@@ -36,9 +35,6 @@ app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix="/api/users")
 app.register_blueprint(auth_routes, url_prefix="/api/auth")
 app.register_blueprint(artifax_routes, url_prefix="/api/artifax")
-app.register_blueprint(
-    proxy_routes, url_prefix="/api/proxy"
-)  # Register the proxy route
 # app.register_blueprint(comment_routes, url_prefix="/api/comments")
 
 db.init_app(app)
@@ -102,11 +98,6 @@ def react_root(path):
     if path == "favicon.ico":
         return app.send_from_directory("public", "favicon.ico")
     return app.send_static_file("index.html")
-
-
-@app.errorhandler(413)
-def request_entity_too_large(error):
-    return jsonify({"error": "File is too large"}), 413
 
 
 @app.errorhandler(404)
