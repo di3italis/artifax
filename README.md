@@ -37,3 +37,9 @@
 ### 3. User Story
 
 **As an artist, I want to create unique art pieces by interacting with a remote robot so that I can showcase my work in an online gallery. I want to be able to receive feedback from other artists in the community by allowing them to review my work. Additionally, I want to manage my art pieces and reviews easily from a personal dashboard.**
+
+
+### 4. Conceptual Wireframe
+
+![Community Artifax Gallery](https://i.ibb.co/fMxQBTr/3360962-E-E9-AD-48-EF-A366-C058-C3215-E1-E.jpg)
+
