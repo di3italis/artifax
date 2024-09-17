@@ -98,7 +98,7 @@ export default function ArtId() {
                         .map((comment) => (
                             <div key={comment.id}>
                                 <p className={styles.comment}>{comment.text}</p>
-                                <p className={styles.user}>User -> {comment.username}</p>
+                                <p className={styles.user}>User {comment.username}</p>
 
                                 {currentUser?.id === comment.owner_id && (
                                     <>
